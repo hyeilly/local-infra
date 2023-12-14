@@ -8,6 +8,17 @@ services:
         - PYTHON_VERSION=${PYTHON_VERSION}
         - DEFAULT_USERNAME=${DEFAULT_USERNAME}
     volumes:
+      - ${LOCAL_PROJECT_PATH}/workspace:${DEFAULT_PATH}
+    ports:
+      - "${WORKSPACE_HOST_PORT}:80"
+    tty: true
+  study-coding-test:
+    build:
+      context: ./study-coding-test
+      args:
+        - PYTHON_VERSION=3.8
+        - DEFAULT_USERNAME=${DEFAULT_USERNAME}
+    volumes:
       - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
     ports:
       - "${WORKSPACE_HOST_PORT}:80"

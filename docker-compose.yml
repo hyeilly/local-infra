@@ -1,0 +1,14 @@
+version: '0.8'
+
+services:
+  workspace:
+    build:
+      context: ./workspace
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+        - DEFAULT_USERNAME=${DEFAULT_USERNAME}
+    volumes:
+      - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
+    ports:
+      - "${WORKSPACE_HOST_PORT}:80"
+    tty: true

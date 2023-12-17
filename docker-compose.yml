@@ -28,9 +28,19 @@ services:
   hani-serving-data:
     build:
       context: ./hani-serving-data
-    image: nginx:1.21.5-alpine
-    ports:
-      - 80:80
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+    container_name: hani-serving-data
+    restart: always
+    environment:
+      - APP_NAME=hani-serving-data
     volumes:
-      - ./hani-serving-data/proxy/nginx.conf:/etc/nginx/nginx.conf
-    container_name: myweb-proxy
+      - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
+    expose:
+      - 9000
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"

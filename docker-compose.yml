@@ -1,4 +1,7 @@
 version: '0.8'
+networks:
+  api-connection:
+    driver: bridge
 
 services:
   workspace:
@@ -24,23 +27,34 @@ services:
     ports:
       - "${WORKSPACE_HOST_PORT}:80"
     tty: true
+  nginx:
+    depends_on:
+      - hani-serving-data
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/hani-serving-data.conf:/etc/nginx/hani-serving-data.conf
+    ports:
+      - "80:80"
+    networks:
+      - api-connection
 
   hani-serving-data:
+    container_name: hani-serving-data
     build:
       context: ./hani-serving-data
       args:
         - PYTHON_VERSION=${PYTHON_VERSION}
-    container_name: hani-serving-data
+        - LIBGL_PATH=/usr/lib/x86_64-linux-gnu/libGL.so.1
     restart: always
     environment:
       - APP_NAME=hani-serving-data
+    command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
     volumes:
       - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
+    networks:
+      - api-connection
     expose:
-      - 9000
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    restart: always
-    ports:
-      - "80:80"
+      - "8000"

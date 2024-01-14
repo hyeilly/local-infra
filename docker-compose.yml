@@ -41,6 +41,17 @@ services:
     networks:
       - api-connection
 
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: my-test
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1248
+    ports:
+      - "27017:27017"
+    networks:
+      - api-connection
+
   hani-serving-data:
     container_name: hani-serving-data
     build:
@@ -56,5 +67,7 @@ services:
       - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
     networks:
       - api-connection
+    depends_on:
+      - mongo
     expose:
       - "8000"

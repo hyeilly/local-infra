@@ -7,7 +7,8 @@ Infrastructure used locally
   - [GOAL] user 생성
 - PRIVATE [hani-serving-data](https://github.com/hyeilly/hani-serving-data)
   - 포트폴리오) nginx / fastapi / mongodb 연결으로 API 서버 구축
-  - [GOAL] fastapi project directory와 nginx 연결  
+  - [GOAL] fastapi project directory와 nginx 연결 [O]
+  - [GOAL] 디지털 구독 데이터 통계 API 개발
 
 ## exec
 1. `docker-compose up -d {context_name}`

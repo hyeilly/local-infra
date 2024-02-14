@@ -7,10 +7,10 @@ RUN apt-get update \
     && apt install python3-pip -y \
     && apt install build-essential python3-dev
 
-COPY . /var/www
+#COPY . /var/www
 WORKDIR /var/www/hani-serving-data
 
-COPY ./requirements.txt /var/www/hani-serving-data/requirements.txt
+COPY ./requirements.txt /var/www/hani-serving-data
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt

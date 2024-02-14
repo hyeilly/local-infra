@@ -64,10 +64,6 @@ services:
       - APP_NAME=hani-serving-data
     command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
     volumes:
-      - ${LOCAL_PROJECT_PATH}:${DEFAULT_PATH}
+      - ${LOCAL_PROJECT_PATH}/hani-serving-data:${DEFAULT_PATH}/hani-serving-data
     networks:
       - api-connection
-    depends_on:
-      - mongo
-    expose:
-      - "8000"

@@ -52,6 +52,22 @@ services:
     networks:
       - api-connection
 
+  serving-data:
+    container_name: serving-data
+    build:
+      context: ./hani-serving-data
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+        - LIBGL_PATH=/usr/lib/x86_64-linux-gnu/libGL.so.1
+    restart: always
+    environment:
+      - APP_NAME=serving-data
+    command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
+    volumes:
+      - ${LOCAL_PROJECT_PATH}/hani-serving-data:${DEFAULT_PATH}/serving-data
+    networks:
+      - api-connection
+
   hani-serving-data:
     container_name: hani-serving-data
     build:
@@ -62,8 +78,8 @@ services:
     restart: always
     environment:
       - APP_NAME=hani-serving-data
-    command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
+    command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8001
     volumes:
-      - ${LOCAL_PROJECT_PATH}/hani-serving-data:${DEFAULT_PATH}/hani-serving-data
+      - ${LOCAL_HANI_PROJECT_PATH}/hani-serving-data:${DEFAULT_PATH}/hani-serving-data
     networks:
       - api-connection
